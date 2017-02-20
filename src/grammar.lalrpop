@@ -20,11 +20,9 @@ Identifier: str = {
 
 ExpressionList: Vec<Box<Expression>> = {
     <e:Expression> <elist:("," <Expression>)*> => match elist {
-        None => {
-            vec![e]
-        },
+        None => vec![e],
         Some => {
-            let v = vec![e]
+            let mut v = vec![e];
             for e in elist {
                 v.push(e);
             }
@@ -73,10 +71,14 @@ INTEGER_LITERAL: i32 = {
 }; 
 
 
-// FIXME turn these guys into strings 
 IDENTIFIER: str = {
-    LETTER,  //  Single letter
-    (LETTER+ ("_")+ DIGIT+)* // Any combination of letters/_/digits
+    <l:LETTER> <rest:(LETTER* "_"* DIGIT*)*> => {
+        let mut s = str::from(l);
+        for letter in rest {
+            s.push(letter);
+        }
+        s
+    }
 }; 
 
 LETTER: char = { r"[A-Z, a-z]" => <>.unwrap(), }; // can I do this? 

@@ -2,7 +2,7 @@ This is an attempt at modelling the front-end-est part of a compiler for a tiny 
 
 #Grammar#
 
-##Expressions##
+##Expressions
 
 Program ::= Statement* PRINT Expression
 
@@ -24,7 +24,7 @@ PrimaryExpression ::= INTEGER_LITERAL | Identifier | "(" Expression ")"
 
 Identifier ::= IDENTIFIER 
 
-##Functions## 
+##Functions 
 
 Statement ::= .... FunctionDeclaration 
 
