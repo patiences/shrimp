@@ -2,14 +2,11 @@
 name = "shrimp"
 version = "0.1.0"
 authors = ["Patience Shyu <patienceshyu@gmail.com>"]
+build = "build.rs" # <-- We added this and everything after!
+
+[build-dependencies]
+lalrpop = "0.12.5"
 
 [dependencies]
-build = "build.rs" # LALRPOP preprocessing
-
-# Add a dependency on the LALRPOP runtime library:
-[dependencies.lalrpop-util]
-version = "0.12.5"
-
-[build-dependencies.lalrpop]
-version = "0.12.5"
+lalrpop-util = "0.12.5"
 

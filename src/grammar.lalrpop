@@ -2,8 +2,8 @@ use std::str::FromStr;
 
 grammar; 
 
-Program: Box<Program> = {
-    <(Statement)*> "print" <Expression> = Box::new(Program(<>))
+pub Program: Box<Program> = {
+    <(Statement)*> "print" <Expression> => Box::new(Program(<>))
 };
 
 Statement: Box<Statement> = {
@@ -19,7 +19,7 @@ Identifier: str = {
 };
 
 ExpressionList: Vec<Box<Expression>> = {
-    <e:Expression> <elist:("," <Expression>)>* => match elist {
+    <e:Expression> <elist:("," <Expression>)*> => match elist {
         None => {
             vec![e]
         },
@@ -62,23 +62,23 @@ NotExpression: Box<Expression> = {
 
 // Expressions with the highest precedence 
 PrimaryExpression: Box<Expression> = {
-    IntegerLiteral => Box::new(Expression::IntegerLiteral(<>)), 
-    Identifier => Box::new(Expression::IdentifierExp(<>), 
-    "(" <Expression> ")"  
-}
+    INTEGER_LITERAL => Box::new(Expression::IntegerLiteral(<>)), 
+    Identifier => Box::new(Expression::IdentifierExp(<>)), 
+    "(" <Expression> ")",  
+};
 
 // Tokens 
 INTEGER_LITERAL: i32 = {
-    (DIGIT)+ => i32::from_str(<>).unwrap() // 1 or more digits 
+    (DIGIT)+ => i32::from_str(<>).unwrap(), // 1 or more digits 
 }; 
 
 
 // FIXME turn these guys into strings 
 IDENTIFIER: str = {
     LETTER,  //  Single letter
-    (LETTER | "_" | DIGIT)* // Any combination of letters/_/digits
+    (LETTER+ ("_")+ DIGIT+)* // Any combination of letters/_/digits
 }; 
 
-LETTER: char = { r"[A-Z, a-z]" => <>.unwrap() }; // can I do this? 
+LETTER: char = { r"[A-Z, a-z]" => <>.unwrap(), }; // can I do this? 
 
-DIGIT: i32 = { r"[0-9]" => i32::from_str(<>).unwrap() };
+DIGIT: i32 = { r"[0-9]" => i32::from_str(<>).unwrap(), };
