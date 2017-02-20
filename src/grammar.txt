@@ -1,0 +1,38 @@
+//Expressions
+
+Program ::= Statement* PRINT Expression
+
+Statement ::= Assign 
+
+Assign ::= Identifier "=" Expression ";" 
+
+Expression ::= CompExpression ( "?" Expression ":" Expression ) ?
+
+CompExpression ::= AddExpression ( "<" AddExpression ) ?
+
+AddExpression ::= MultExpression ( ("+"|"-") MultExpression ) * 
+
+MultExpression ::= Not Expression ( * NotExpression ) * 
+
+NotExpression ::= "!" NotExpression | PrimaryExpression 
+
+PrimaryExpression ::= INTEGER_LITERAL | Identifier | "(" Expression ")"
+
+Identifier ::= IDENTIFIER 
+
+//Functions 
+
+Statement ::= .... FunctionDeclaration 
+
+FunctionDeclaration ::= Type Identifier "(" FormalList ")" "{"
+                            Assign * 
+                            "return" Expression ";" 
+                        "}"
+
+FormalList ::= ( Type Identifier ( "," Type Identifier ) * ) ? 
+
+Type ::= "int" | "boolean" 
+
+PrimaryExpression ::= .... Identifier "(" ExpressionList ")" 
+
+ExpressionList ::= ( Expression ( "," Expression ) * ) ? 

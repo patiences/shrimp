@@ -1,0 +1,15 @@
+[package]
+name = "shrimp"
+version = "0.1.0"
+authors = ["Patience Shyu <patienceshyu@gmail.com>"]
+
+[dependencies]
+build = "build.rs" # LALRPOP preprocessing
+
+# Add a dependency on the LALRPOP runtime library:
+[dependencies.lalrpop-util]
+version = "0.12.5"
+
+[build-dependencies.lalrpop]
+version = "0.12.5"
+

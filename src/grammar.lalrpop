@@ -1,0 +1,60 @@
+use std::str::FromStr;
+
+grammar; 
+Statement: Box<Statement> = {
+    Assign,
+};
+
+Assign: Box<Statement> = {
+    <Identifier> "=" <Expression> => Box::new(Statement::Assign(<>))
+};
+
+Expression: Box<Expression> = {
+    <CompExpression> "?" <Expression> ":" <Expression> =>
+    Box::new(Expression::Conditional(<>)),
+    CompExpression, 
+};
+
+CompExpression: Box<Expression> = {
+    <AddExpression> "<" <AddExpression> => Box::new(Expression::LessThan(<>)),
+    AddExpression,
+};
+
+AddExpression: Box<Expression> = { 
+    <MultExpression> "+" <MultExpression> => Box::new(Expression::Plus(<>)),
+    <MultExpression> "-" <MultExpression> => Box::new(Expression::Minus(<>)),
+    MultExpression, 
+};
+
+MultExpression: Box<Expression> = {
+    <NotExpression> "*" <NotExpression> => Box::new(Expression::Times(<>)),
+    NotExpression,
+};
+
+NotExpression: Box<Expression> = {
+    "!" NotExpression => Box::new(Expression::Not(<>)),
+    PrimaryExpression,
+};
+
+// Expressions with the highest precedence 
+PrimaryExpression: Box<Expression> = {
+    IntegerLiteral => Box::new(Expression::IntegerLiteral(<>)), 
+    Identifier => Box::new(Expression::IdentifierExp(<>), 
+    "(" <Expression> ")"  
+}
+
+// Tokens 
+IntegerLiteral: i32 = {
+    (Digit)+ => i32::from_str(<>).unwrap() // 1 or more digits 
+}; 
+
+
+// FIXME turn these guys into strings 
+Identifier: str = {
+    Letter,  //  Single letter
+    (Letter | "_" | Digit)* // Any combination of letters/_/digits
+}; 
+
+Letter: char = { r"[A-Z, a-z]" => <>.unwrap() }; // can I do this? 
+
+Digit: i32 = { r"[0-9]" => i32::from_str(<>).unwrap() };
