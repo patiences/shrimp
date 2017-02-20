@@ -12,7 +12,7 @@ CompExpression ::= AddExpression ( "<" AddExpression ) ?
 
 AddExpression ::= MultExpression ( ("+"|"-") MultExpression ) * 
 
-MultExpression ::= Not Expression ( * NotExpression ) * 
+MultExpression ::= NotExpression ( * NotExpression ) * 
 
 NotExpression ::= "!" NotExpression | PrimaryExpression 
 

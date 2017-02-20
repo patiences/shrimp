@@ -1,12 +1,36 @@
 use std::str::FromStr;
 
 grammar; 
+
+Program: Box<Program> = {
+    <(Statement)*> "print" <Expression> = Box::new(Program(<>))
+};
+
 Statement: Box<Statement> = {
     Assign,
 };
 
 Assign: Box<Statement> = {
     <Identifier> "=" <Expression> => Box::new(Statement::Assign(<>))
+};
+
+Identifier: str = {
+    IDENTIFIER
+};
+
+ExpressionList: Vec<Box<Expression>> = {
+    <e:Expression> <elist:("," <Expression>)>* => match elist {
+        None => {
+            vec![e]
+        },
+        Some => {
+            let v = vec![e]
+            for e in elist {
+                v.push(e);
+            }
+            v
+        }
+    }
 };
 
 Expression: Box<Expression> = {
@@ -44,17 +68,17 @@ PrimaryExpression: Box<Expression> = {
 }
 
 // Tokens 
-IntegerLiteral: i32 = {
-    (Digit)+ => i32::from_str(<>).unwrap() // 1 or more digits 
+INTEGER_LITERAL: i32 = {
+    (DIGIT)+ => i32::from_str(<>).unwrap() // 1 or more digits 
 }; 
 
 
 // FIXME turn these guys into strings 
-Identifier: str = {
-    Letter,  //  Single letter
-    (Letter | "_" | Digit)* // Any combination of letters/_/digits
+IDENTIFIER: str = {
+    LETTER,  //  Single letter
+    (LETTER | "_" | DIGIT)* // Any combination of letters/_/digits
 }; 
 
-Letter: char = { r"[A-Z, a-z]" => <>.unwrap() }; // can I do this? 
+LETTER: char = { r"[A-Z, a-z]" => <>.unwrap() }; // can I do this? 
 
-Digit: i32 = { r"[0-9]" => i32::from_str(<>).unwrap() };
+DIGIT: i32 = { r"[0-9]" => i32::from_str(<>).unwrap() };

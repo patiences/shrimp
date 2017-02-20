@@ -10,6 +10,11 @@ pub enum Expression {
 }
 
 pub enum Statement {
-    Assign(str, Box<Expression)
+    Assign(str, Box<Expression),
+    Print(Box<Expression>),
 }
 
+pub struct Program { 
+    statements : Vec<Statement>,
+    print: Statement::Print
+}
