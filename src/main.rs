@@ -14,9 +14,22 @@ fn assert_exp_ok(str exp) {
     assert_ok("print " + exp);
 }
 
+// Programs end with a print statement 
+fn assert_exp_err(str exp) {
+    assert_err("print " + exp);
+}
+
+// Programs end with a print statement 
 fn assert_stmt_ok(str stmt) {
     assert_ok(stmt + " print 1"); 
 }
+
+fn assert_stmt_err(str stmt) {
+    assert_err("stmt + " print 1");
+}
+
+// Many of these tests are invalid programs -- which is okay! 
+// We only care about whether or not they pass the parsing phase. 
 
 #[test]
 fn test_smallest() {
@@ -31,6 +44,7 @@ fn test_identifier() {
     assert_exp_ok("x_y_123");
     assert_exp_ok("12345");
     assert_exp_ok("12_34");
+    assert_exp_ok("___");
 }
 
 #[test]
@@ -48,6 +62,8 @@ fn test_not() {
 fn test_parens() {
     assert_exp_ok("(1)");
     assert_exp_ok("(((((1)))))");
+    assert_exp_err("((1");
+    assert_exp_err("1))");
 }
 
 #[test]
@@ -56,6 +72,9 @@ fn test_mult() {
     assert_exp_ok("10*9*8");
     assert_exp_ok("foo*length");
     assert_exp_ok("10*9*8*7*x*y*foo");
+    assert_exp_err("*");
+    assert_exp_err("1*");
+    assert_exp_err("*foo");
 }
 
 #[test]
@@ -71,6 +90,9 @@ fn test_add() {
     assert_exp_ok("10+9+x*length-foo+array");
     assert_exp_ok("(a-b)*(a+b)");
     assert_exp_ok("a-b-c*5+4*3");
+    assert_exp_err("+-");
+    assert_exp_err("+1");
+    assert_exp_err("123-");
 }
 
 #[test]
@@ -79,6 +101,7 @@ fn test_comp() {
     assert_exp_ok("10+a*3<9-4+2");
     assert_exp_ok("length<1");
     assert_exp_ok("i<foo");
+    assert_exp_err("<<<");
 }
 
 #[test]
@@ -87,12 +110,17 @@ fn test_conditional() {
     assert_exp_ok("10+a*3<9-4+2 ? 3 + 4 : 5 * 7");
     assert_exp_ok("1 ? 2 ? 3 ? 4 : 5 : 6 : 7");
     assert_exp_ok("1 ? 2 ? 3 : 4 ? 5 : 6 : 7 ? 8 : 9");
+    assert_exp_err("????");
+    assert_exp_err("?");
+    assert_exp_err("1 ? 2");
 }
 
 #[test]
 fn test_assign() {
     assert_stmt_ok("numbers = numbers + 1;");
     assert_stmt_ok("foo=foo+1;");
+    assert_stmt_err("foo=");
+    assert_stmt_err("foo=foo");
 }
 
 #[test]
