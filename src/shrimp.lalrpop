@@ -1,4 +1,5 @@
 use std::str::FromStr;
+use ast::{Expression, Statement, Program};
 
 grammar; 
 
@@ -14,14 +15,14 @@ Assign: Box<Statement> = {
     <Identifier> "=" <Expression> => Box::new(Statement::Assign(<>))
 };
 
-Identifier: str = {
+Identifier: String = {
     IDENTIFIER
 };
 
 ExpressionList: Vec<Box<Expression>> = {
     <e:Expression> <elist:("," <Expression>)*> => match elist {
         None => vec![e],
-        Some => {
+        Some(elist) => {
             let mut v = vec![e];
             for e in elist {
                 v.push(e);
@@ -32,8 +33,7 @@ ExpressionList: Vec<Box<Expression>> = {
 };
 
 Expression: Box<Expression> = {
-    <CompExpression> "?" <Expression> ":" <Expression> =>
-    Box::new(Expression::Conditional(<>)),
+    <CompExpression> "?" <Expression> ":" <Expression> => Box::new(Expression::Conditional(<>)),
     CompExpression, 
 };
 
@@ -70,17 +70,34 @@ INTEGER_LITERAL: i32 = {
     (DIGIT)+ => i32::from_str(<>).unwrap(), // 1 or more digits 
 }; 
 
+//IDENTIFIER: String = {
+//    r"[A-Z, a-z]?_?[0-9]?",
+//    (LETTER? "_"? DIGIT?)* => {
+//        let s = <>.join("");
+//        s
+//    }
 
-IDENTIFIER: str = {
-    <l:LETTER> <rest:(LETTER* "_"* DIGIT*)*> => {
-        let mut s = str::from(l);
-        for letter in rest {
-            s.push(letter);
-        }
-        s
-    }
-}; 
+//    <l:LETTER> <rest:(LETTER* "_"* DIGIT*)*> => {
+//        let mut s = str::from(l);
+//        for letter in rest {
+//            s.push(letter);
+//        }
+//        s
+//    }
+//}; 
 
-LETTER: char = { r"[A-Z, a-z]" => <>.unwrap(), }; // can I do this? 
+IDENTIFIER: String = {
+//    (LETTER* "_"* DIGIT*)* => {
+//        let s = <>.join("");
+//        s
+//    }
+    r"[a-zA-Z][a-zA-Z0-9_]*",
+};
 
-DIGIT: i32 = { r"[0-9]" => i32::from_str(<>).unwrap(), };
+//LETTER: String = { 
+//    r"[a-zA-Z]", 
+//};  
+
+DIGIT: String = { 
+    r"[0-9]", 
+};

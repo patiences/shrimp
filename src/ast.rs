@@ -16,5 +16,5 @@ pub enum Statement {
 
 pub struct Program { 
     statements : Vec<Statement>,
-    print: Statement::Print
+    print: Statement::Print,
 }

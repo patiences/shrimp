@@ -2,30 +2,30 @@ extern crate lalrpop_util;
 
 pub mod shrimp; 
 
-fn assert_ok(str program) {
-    assert!(shrimp::parse_Program("print " + program).is_ok());
+fn assert_ok(program : String) {
+    assert!(shrimp::parse_Program(&("print ".to_string() + &program)).is_ok());
 }
     
-fn assert_err(str program) {
-    assert!(shrimp::parse_Program("print " + program).is_err());
+fn assert_err(program : String) {
+    assert!(shrimp::parse_Program(&("print ".to_string() + &program)).is_err());
 }
 
-fn assert_exp_ok(str exp) {
-    assert_ok("print " + exp);
-}
-
-// Programs end with a print statement 
-fn assert_exp_err(str exp) {
-    assert_err("print " + exp);
+fn assert_exp_ok(exp : String) {
+    assert_ok("print ".to_string() + &exp);
 }
 
 // Programs end with a print statement 
-fn assert_stmt_ok(str stmt) {
+fn assert_exp_err(exp : String) {
+    assert_err("print ".to_string() + &exp);
+}
+
+// Programs end with a print statement 
+fn assert_stmt_ok(stmt : String) {
     assert_ok(stmt + " print 1"); 
 }
 
-fn assert_stmt_err(str stmt) {
-    assert_err("stmt + " print 1");
+fn assert_stmt_err(stmt : String) {
+    assert_err(stmt + " print 1");
 }
 
 // Many of these tests are invalid programs -- which is okay! 
@@ -130,9 +130,10 @@ fn test_bigger() {
     assert_ok("zero = 0; one = 1; two = one + zero; three = two + one; four = three + two; print four");
     assert_ok("l = 5; r = 8; less = l < r; print less");
     assert_ok("less = 1 < 2; more = !less; print more");
-    assert_ok("y = 2017; print y + 1")
+    assert_ok("y = 2017; print y + 1");
 }
 
+#[cfg(not(test))]
 fn main() {
     println!("Hello, world!");
 }
