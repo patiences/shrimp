@@ -15,7 +15,7 @@ pub enum Statement {
 }
 
 pub struct Program { 
-    statements : Vec<Statement>, 
-    print : Expression,
+    pub statements : Vec<Box<Statement>>, 
+    pub print : Box<Expression>,
 
 }

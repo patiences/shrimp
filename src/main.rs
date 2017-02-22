@@ -3,30 +3,31 @@ extern crate lalrpop_util;
 pub mod shrimp; 
 pub mod ast; 
 
-fn assert_ok(program : String) {
-    assert!(shrimp::parse_Program(&("print ".to_string() + &program)).is_ok());
-}
-    
-fn assert_err(program : String) {
-    assert!(shrimp::parse_Program(&("print ".to_string() + &program)).is_err());
+// TODO: Revisit these string types...?
+fn assert_ok(program : &str) {
+    assert!(shrimp::parse_Program(&("print ".to_string() + program)).is_ok());
 }
 
-fn assert_exp_ok(exp : String) {
-    assert_ok("print ".to_string() + &exp);
+fn assert_err(program : &str) {
+    assert!(shrimp::parse_Program(&("print ".to_string() + program)).is_err());
 }
 
-// Programs end with a print statement 
-fn assert_exp_err(exp : String) {
-    assert_err("print ".to_string() + &exp);
+fn assert_exp_ok(exp : &str) {
+    assert_ok(&("print ".to_string() + exp));
 }
 
 // Programs end with a print statement 
-fn assert_stmt_ok(stmt : String) {
-    assert_ok(stmt + " print 1"); 
+fn assert_exp_err(exp : &str) {
+    assert_err(&("print ".to_string() + exp));
 }
 
-fn assert_stmt_err(stmt : String) {
-    assert_err(stmt + " print 1");
+// Programs end with a print statement 
+fn assert_stmt_ok(stmt : &str) {
+    assert_ok(&(stmt.to_string() + " print 1")); 
+}
+
+fn assert_stmt_err(stmt : &str) {
+    assert_err(&(stmt.to_string() + " print 1"));
 }
 
 // Many of these tests are invalid programs -- which is okay! 

@@ -20,15 +20,24 @@ Identifier: String = {
     IDENTIFIER
 };
 
-ExpressionList: Vec<Box<Expression>> = {
-    <e:Expression> <elist:("," <Expression>)*> => match elist {
-        None => vec![e],
-        Some(elist) => {
-            let mut v = vec![e];
-            for e in elist {
-                v.push(e);
-            }
-            v
+ExpressionList: Vec<Box<Expression>> = { // Maybe rethink this box thing
+// LL parsing style? 
+//    <e:Expression> <elist:("," <Expression>)*> => match elist {
+//        None => vec![e],
+//        Some(elist) => {
+//            let mut v = vec![e];
+//            for e in elist {
+//                v.push(e);
+//            }
+//            v
+//        }
+ //   }
+    <elist:(<Expression> ",")*> <e:Expression?> => match e {
+        None => elist,
+        Some(e) => {
+            let mut elist = elist; 
+            elist.push(e);
+            elist
         }
     }
 };
@@ -66,39 +75,33 @@ PrimaryExpression: Box<Expression> = {
     "(" <Expression> ")",  
 };
 
-// Tokens 
-INTEGER_LITERAL: i32 = {
-    (DIGIT)+ => i32::from_str(<>).unwrap(), // 1 or more digits 
+INTEGER_LITERAL: i32 = { // FIXME 
+//    (DIGIT)+ => i32::from_str(<>).unwrap(), // 1 or more digits 
+    r"[0-9]+" => i32::from_str(<>).unwrap(),
 }; 
 
-//IDENTIFIER: String = {
-//    r"[A-Z, a-z]?_?[0-9]?",
-//    (LETTER? "_"? DIGIT?)* => {
-//        let s = <>.join("");
-//        s
-//    }
-
+IDENTIFIER: String = { // FIXME
+// LL parsing style? 
 //    <l:LETTER> <rest:(LETTER* "_"* DIGIT*)*> => {
-//        let mut s = str::from(l);
-//        for letter in rest {
-//            s.push(letter);
+//        let mut s = String::from(l);
+//        for letter in rest { 
+//          s.push_str(letter);
 //        }
 //        s
 //    }
-//}; 
-
-IDENTIFIER: String = {
-//    (LETTER* "_"* DIGIT*)* => {
-//        let s = <>.join("");
-//        s
-//    }
-    r"[a-zA-Z][a-zA-Z0-9_]*",
+    r"[a-zA-Z][a-zA-Z0-9_]*" => {
+        let s = <>.to_string();
+        s
+    },
 };
 
 //LETTER: String = { 
 //    r"[a-zA-Z]", 
 //};  
 
-DIGIT: String = { 
-    r"[0-9]", 
-};
+//DIGIT: String = { 
+//    r"[0-9]" => { 
+//        let s = <>.to_string();
+//        s
+//    },
+//};
