@@ -1,6 +1,7 @@
 extern crate lalrpop_util; 
 
 pub mod shrimp; 
+pub mod ast; 
 
 fn assert_ok(program : String) {
     assert!(shrimp::parse_Program(&("print ".to_string() + &program)).is_ok());

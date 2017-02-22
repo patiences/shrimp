@@ -4474,12 +4474,12 @@ pub fn __action1<
     'input,
 >(
     input: &'input str,
-    (_, __0, _): (usize, ::std::vec::Vec<Box<Statement>>, usize),
+    (_, s, _): (usize, ::std::vec::Vec<Box<Statement>>, usize),
     (_, _, _): (usize, &'input str, usize),
-    (_, __1, _): (usize, Box<Expression>, usize),
+    (_, e, _): (usize, Box<Expression>, usize),
 ) -> Box<Program>
 {
-    Box::new(Program(__0, __1))
+    Box::new(Program{s, e})
 }
 
 #[allow(unused_variables)]

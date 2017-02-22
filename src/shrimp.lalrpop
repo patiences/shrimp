@@ -4,7 +4,7 @@ use ast::{Expression, Statement, Program};
 grammar; 
 
 pub Program: Box<Program> = {
-    <(Statement)*> "print" <Expression> => Box::new(Program(<>))
+    <s:(Statement)*> "print" <e:Expression> => Box::new(Program{s, e})
 };
 
 Statement: Box<Statement> = {
