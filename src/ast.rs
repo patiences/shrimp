@@ -1,6 +1,6 @@
 pub enum Expression {
     IntegerLiteral(i32),
-    IdentifierExp(str),  
+    IdentifierExp(String),  
     Plus(Box<Expression>, Box<Expression>),
     Minus(Box<Expression>, Box<Expression>),
     Times(Box<Expression>, Box<Expression>),
@@ -10,12 +10,12 @@ pub enum Expression {
 }
 
 pub enum Statement {
-    Assign(str, Box<Expression>),
+    Assign(String, Box<Expression>),
     Print(Box<Expression>),
 }
 
 pub struct Program { 
     statements : Vec<Statement>, 
-    print : Statement,
+    print : Expression,
 
 }

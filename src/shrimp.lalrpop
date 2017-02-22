@@ -4,7 +4,8 @@ use ast::{Expression, Statement, Program};
 grammar; 
 
 pub Program: Box<Program> = {
-    <s:(Statement)*> "print" <e:Expression> => Box::new(Program{s, e})
+    <s:(Statement)*> "print" <e:Expression> => Box::new(Program{statements : s,
+    print : e})
 };
 
 Statement: Box<Statement> = {
@@ -54,7 +55,7 @@ MultExpression: Box<Expression> = {
 };
 
 NotExpression: Box<Expression> = {
-    "!" NotExpression => Box::new(Expression::Not(<>)),
+    "!" <NotExpression> => Box::new(Expression::Not(<>)),
     PrimaryExpression,
 };
 

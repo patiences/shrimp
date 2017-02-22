@@ -4479,7 +4479,8 @@ pub fn __action1<
     (_, e, _): (usize, Box<Expression>, usize),
 ) -> Box<Program>
 {
-    Box::new(Program{s, e})
+    Box::new(Program{statements : s,
+    print : e})
 }
 
 #[allow(unused_variables)]
@@ -4654,11 +4655,11 @@ pub fn __action15<
     'input,
 >(
     input: &'input str,
-    (_, __0, _): (usize, &'input str, usize),
-    (_, __1, _): (usize, Box<Expression>, usize),
+    (_, _, _): (usize, &'input str, usize),
+    (_, __0, _): (usize, Box<Expression>, usize),
 ) -> Box<Expression>
 {
-    Box::new(Expression::Not(__0, __1))
+    Box::new(Expression::Not(__0))
 }
 
 #[allow(unused_variables)]
