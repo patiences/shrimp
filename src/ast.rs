@@ -11,11 +11,9 @@ pub enum Expression {
 
 pub enum Statement {
     Assign(String, Box<Expression>),
-    Print(Box<Expression>),
 }
 
 pub struct Program { 
-    pub statements : Vec<Box<Statement>>, 
-    pub print : Box<Expression>,
-
+    pub statements: Vec<Box<Statement>>, 
+    pub print: Box<Expression>, 
 }

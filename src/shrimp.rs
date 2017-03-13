@@ -3992,8 +3992,7 @@ pub fn __action1<
     (_, e, _): (usize, Box<Expression>, usize),
 ) -> Box<Program>
 {
-    Box::new(Program{statements : s,
-    print : e})
+    Box::new(Program { statements: s, print: e })
 }
 
 #[allow(unused_variables)]
@@ -4043,7 +4042,7 @@ pub fn __action5<
     match e {
         None => elist,
         Some(e) => {
-            let mut elist = elist; 
+            let mut elist = elist;
             elist.push(e);
             elist
         }
@@ -4238,7 +4237,7 @@ pub fn __action21<
     (_, __0, _): (usize, &'input str, usize),
 ) -> String
 {
-    {
+    { // FIXME: underscores
         let s = __0.to_string();
         s
     }

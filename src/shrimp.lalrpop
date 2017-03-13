@@ -1,11 +1,11 @@
 use std::str::FromStr;
 use ast::{Expression, Statement, Program};
 
-grammar; 
+grammar;
 
 pub Program: Box<Program> = {
-    <s:(Statement)*> "print" <e:Expression> => Box::new(Program{statements : s,
-    print : e})
+    <s:(Statement)*> "print" <e:Expression> =>
+        Box::new(Program { statements: s, print: e })
 };
 
 Statement: Box<Statement> = {
@@ -20,22 +20,11 @@ Identifier: String = {
     IDENTIFIER
 };
 
-ExpressionList: Vec<Box<Expression>> = { // Maybe rethink this box thing
-// LL parsing style? 
-//    <e:Expression> <elist:("," <Expression>)*> => match elist {
-//        None => vec![e],
-//        Some(elist) => {
-//            let mut v = vec![e];
-//            for e in elist {
-//                v.push(e);
-//            }
-//            v
-//        }
- //   }
+ExpressionList: Vec<Box<Expression>> = {
     <elist:(<Expression> ",")*> <e:Expression?> => match e {
         None => elist,
         Some(e) => {
-            let mut elist = elist; 
+            let mut elist = elist;
             elist.push(e);
             elist
         }
@@ -44,7 +33,7 @@ ExpressionList: Vec<Box<Expression>> = { // Maybe rethink this box thing
 
 Expression: Box<Expression> = {
     <CompExpression> "?" <Expression> ":" <Expression> => Box::new(Expression::Conditional(<>)),
-    CompExpression, 
+    CompExpression,
 };
 
 CompExpression: Box<Expression> = {
@@ -52,10 +41,10 @@ CompExpression: Box<Expression> = {
     AddExpression,
 };
 
-AddExpression: Box<Expression> = { 
+AddExpression: Box<Expression> = {
     <MultExpression> "+" <MultExpression> => Box::new(Expression::Plus(<>)),
     <MultExpression> "-" <MultExpression> => Box::new(Expression::Minus(<>)),
-    MultExpression, 
+    MultExpression,
 };
 
 MultExpression: Box<Expression> = {
@@ -68,40 +57,20 @@ NotExpression: Box<Expression> = {
     PrimaryExpression,
 };
 
-// Expressions with the highest precedence 
+// Expressions with the highest precedence
 PrimaryExpression: Box<Expression> = {
-    INTEGER_LITERAL => Box::new(Expression::IntegerLiteral(<>)), 
-    Identifier => Box::new(Expression::IdentifierExp(<>)), 
-    "(" <Expression> ")",  
+    INTEGER_LITERAL => Box::new(Expression::IntegerLiteral(<>)),
+    Identifier => Box::new(Expression::IdentifierExp(<>)),
+    "(" <Expression> ")",
 };
 
-INTEGER_LITERAL: i32 = { // FIXME 
-//    (DIGIT)+ => i32::from_str(<>).unwrap(), // 1 or more digits 
+INTEGER_LITERAL: i32 = {
     r"[0-9]+" => i32::from_str(<>).unwrap(),
-}; 
+};
 
-IDENTIFIER: String = { // FIXME
-// LL parsing style? 
-//    <l:LETTER> <rest:(LETTER* "_"* DIGIT*)*> => {
-//        let mut s = String::from(l);
-//        for letter in rest { 
-//          s.push_str(letter);
-//        }
-//        s
-//    }
-    r"[a-zA-Z][a-zA-Z0-9_]*" => {
+IDENTIFIER: String = {
+    r"[a-zA-Z][a-zA-Z0-9_]*" => { // FIXME: underscores
         let s = <>.to_string();
         s
     },
 };
-
-//LETTER: String = { 
-//    r"[a-zA-Z]", 
-//};  
-
-//DIGIT: String = { 
-//    r"[0-9]" => { 
-//        let s = <>.to_string();
-//        s
-//    },
-//};
