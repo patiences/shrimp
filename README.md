@@ -14,9 +14,9 @@ Expression ::= CompExpression ( "?" Expression ":" Expression ) ?
 
 CompExpression ::= AddExpression ( "<" AddExpression ) ?
 
-AddExpression ::= MultExpression ( ("+"|"-") MultExpression ) * 
+AddExpression ::= MultExpression ( ("+"|"-") MultExpression ) ? 
 
-MultExpression ::= NotExpression ( * NotExpression ) * 
+MultExpression ::= NotExpression ( * NotExpression ) ?
 
 NotExpression ::= "!" NotExpression | PrimaryExpression 
 
@@ -40,3 +40,8 @@ Type ::= "int" | "boolean"
 PrimaryExpression ::= .... Identifier "(" ExpressionList ")" 
 
 ExpressionList ::= ( Expression ( "," Expression ) * ) ? 
+
+
+3/12/17: Removed "zero or more (*)" matches on Add/MultExpressions to avoid 
+dealing with matching on vectors in .lalrpop. 
+Let's just require parens around addition/multiplication expressions like a + (b + c).    
