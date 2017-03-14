@@ -23,7 +23,7 @@ mod __parse__Program {
         Term_22_3f_22(&'input str),
         Term_22print_22(&'input str),
         Termr_23_22_5b0_2d9_5d_2b_22_23(&'input str),
-        Termr_23_22_5ba_2dzA_2dZ_5d_5ba_2dzA_2dZ0_2d9___5d_2a_22_23(&'input str),
+        Termr_23_22_5ba_2dzA_2dZ___5d_5ba_2dzA_2dZ0_2d9___5d_2a_22_23(&'input str),
         Termerror(__lalrpop_util::ErrorRecovery<usize, (usize, &'input str), ()>),
         Nt_28_3cExpression_3e_20_22_2c_22_29(Box<Expression>),
         Nt_28_3cExpression_3e_20_22_2c_22_29_2a(::std::vec::Vec<Box<Expression>>),
@@ -2503,7 +2503,7 @@ mod __parse__Program {
             r###""?""###,
             r###""print""###,
             r###"r#"[0-9]+"#"###,
-            r###"r#"[a-zA-Z][a-zA-Z0-9_]*"#"###,
+            r###"r#"[a-zA-Z_][a-zA-Z0-9_]*"#"###,
         ];
         __ACTION[(__state * 15)..].iter().zip(__TERMINAL).filter_map(|(&state, terminal)| {
             if state == 0 {
@@ -2614,7 +2614,7 @@ mod __parse__Program {
                             _ => unreachable!(),
                         },
                         13 => match __lookahead.1 {
-                            (13, __tok0) => __Symbol::Termr_23_22_5ba_2dzA_2dZ_5d_5ba_2dzA_2dZ0_2d9___5d_2a_22_23(__tok0),
+                            (13, __tok0) => __Symbol::Termr_23_22_5ba_2dzA_2dZ___5d_5ba_2dzA_2dZ0_2d9___5d_2a_22_23(__tok0),
                             _ => unreachable!(),
                         },
                         _ => unreachable!(),
@@ -2944,8 +2944,8 @@ mod __parse__Program {
                 11
             }
             25 => {
-                // IDENTIFIER = r#"[a-zA-Z][a-zA-Z0-9_]*"# => ActionFn(21);
-                let __sym0 = __pop_Termr_23_22_5ba_2dzA_2dZ_5d_5ba_2dzA_2dZ0_2d9___5d_2a_22_23(__symbols);
+                // IDENTIFIER = r#"[a-zA-Z_][a-zA-Z0-9_]*"# => ActionFn(21);
+                let __sym0 = __pop_Termr_23_22_5ba_2dzA_2dZ___5d_5ba_2dzA_2dZ0_2d9___5d_2a_22_23(__symbols);
                 let __start = __sym0.0.clone();
                 let __end = __sym0.2.clone();
                 let __nt = super::__action21::<>(input, __sym0);
@@ -3239,13 +3239,13 @@ mod __parse__Program {
             _ => panic!("symbol type mismatch")
         }
     }
-    fn __pop_Termr_23_22_5ba_2dzA_2dZ_5d_5ba_2dzA_2dZ0_2d9___5d_2a_22_23<
+    fn __pop_Termr_23_22_5ba_2dzA_2dZ___5d_5ba_2dzA_2dZ0_2d9___5d_2a_22_23<
       'input,
     >(
         __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>
     ) -> (usize, &'input str, usize) {
         match __symbols.pop().unwrap() {
-            (__l, __Symbol::Termr_23_22_5ba_2dzA_2dZ_5d_5ba_2dzA_2dZ0_2d9___5d_2a_22_23(__v), __r) => (__l, __v, __r),
+            (__l, __Symbol::Termr_23_22_5ba_2dzA_2dZ___5d_5ba_2dzA_2dZ0_2d9___5d_2a_22_23(__v), __r) => (__l, __v, __r),
             _ => panic!("symbol type mismatch")
         }
     }
@@ -3549,6 +3549,11 @@ mod __intern_token {
                         }
                         65 ... 90 => {
                             __current_match = Some((13, __index + __ch.len_utf8()));
+                            __current_state = 13;
+                            continue;
+                        }
+                        95 => /* '_' */ {
+                            __current_match = Some((13, __index + 1));
                             __current_state = 13;
                             continue;
                         }
@@ -4237,7 +4242,7 @@ pub fn __action21<
     (_, __0, _): (usize, &'input str, usize),
 ) -> String
 {
-    { // FIXME: underscores
+    { 
         let s = __0.to_string();
         s
     }

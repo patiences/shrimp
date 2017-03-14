@@ -47,10 +47,10 @@ fn test_identifier() {
     assert_exp_ok("x");
     assert_exp_ok("y");
     assert_exp_ok("xy123");
-    //assert_exp_ok("x_y_123");
-    assert_exp_ok("12345");
-    //assert_exp_ok("12_34");
-    //assert_exp_ok("___");
+    assert_exp_ok("x_y_123");
+    assert_exp_err("12345");
+    assert_exp_err("12_34");
+    assert_exp_ok("___");
 }
 
 #[test]
