@@ -13,7 +13,7 @@ Statement: Box<Statement> = {
 };
 
 Assign: Box<Statement> = {
-    <Identifier> "=" <Expression> => Box::new(Statement::Assign(<>))
+    <Identifier> "=" <Expression> ";" => Box::new(Statement::Assign(<>))
 };
 
 Identifier: String = {
