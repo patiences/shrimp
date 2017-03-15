@@ -3,6 +3,7 @@ extern crate shrimp;
 
 use shrimp::parser::shrimp::parse_Program;
 
+#[allow(unused_variables)]
 fn assert_ok(program : &str) {
     // for debugging
     let result = match parse_Program(program) {
